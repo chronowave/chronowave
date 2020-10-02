@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+option go_package = "ssql;ssql";
+
+enum AttributeType {
+  DOUBLE = 0;
+  INT = 1;
+  TEXT = 2;
+}
+
+message Statement {
+  repeated Attribute find = 1;
+  From from = 2;
+  repeated Expr where = 3;
+  repeated OrderBy order_by = 4;
+  uint32 limit = 5;
+  map<string, string> path = 6;
+}
+
+message Function {
+  enum Func {
+    AVG = 0;
+    SUM = 1;
+    MIN = 2;
+    MAX = 3;
+    COUNT = 4;
+    PCTL = 5;
+    PART = 6;
+  }
+  Func name = 1;
+  oneof parameter {
+    double double = 2;
+    int64 int = 3;
+  }
+}
+
+message Attribute {
+  AttributeType type = 1;
+  string name = 2;
+  bool group = 3;
+  Function func = 4;
+}
+
+message From {
+  bool or = 1;
+  repeated string labels = 2;
+}
+
+message Expr {
+  oneof field {
+    OR or = 1;
+    Tuple tuple = 2;
+  }
+}
+
+message OR {
+  repeated Expr expr = 1;
+}
+
+message Tuple {
+  string name = 1;
+  string path = 2;
+  oneof predicate {
+    Nested nested = 3;
+    Binary timeframe = 4;
+    Unary key = 5;
+    Binary between = 6;
+    Unary contain = 7;
+    Unary exist = 8;
+    Unary eq = 9;
+    Unary neq = 10;
+    Unary gt = 11;
+    Unary ge = 12;
+    Unary lt = 13;
+    Unary le = 14;
+    Unary in = 15;
+  };
+}
+
+message Nested {
+  repeated Expr expr = 1;
+}
+
+message Unary {
+  Operand first = 1;
+}
+
+message Binary {
+  Operand first = 1;
+  Operand second = 2;
+}
+
+message Operand {
+  oneof value {
+    double double = 1;
+    int64 int = 2;
+    string text = 3;
+    List list = 4;
+  }
+}
+
+message List {
+  repeated string text = 1;
+  repeated int64 int = 2;
+  repeated double double = 3;
+}
+
+message OrderBy {
+  enum Direction {
+    ASC = 0;
+    DESC = 1;
+  }
+  string name = 1;
+  Direction direction = 2;
+}

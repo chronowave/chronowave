@@ -1,0 +1,22 @@
+[
+  {
+    "hit": 2,
+    "duration": 2.5,
+    "url": "/sample"
+  },
+  {
+    "hit": 20,
+    "duration": 1.5,
+    "url": "/info"
+  },
+  {
+    "hit": 8,
+    "duration": 6.5,
+    "url": "/checkout"
+  },
+  {
+    "hit": 50,
+    "duration": 0.5,
+    "url": "/logout"
+  }
+]
