@@ -1,7 +1,14 @@
 ## ChronoWave: A schema agnostic data store for append only machine generated data
 
 Chronowave batches input data stream into segments (or blocks) and transforms the semi structured data into columnar formats, followed by creating self compressed index to produce a succinct index data structure. 
-Not only the index size is much smaller than the original data, Chronowave can also use the index (only the index itself) to resolve query requests and extract the original data. Chronowave introduces a new simple query language *SSQL* stands for Semi Structured Query Language.
+
+#### Simple, Small and Performant
+
+*Simple* to develop, use and operate. Machine generated data can be in different shape and size. Chronowave simplifies development cycle with its support of schema agnostic semi structured data. Operation is also fairly easy. Chronowave is engineered on succinct self-compressed index data structure, the basis of shared nothing architecture that can scale out on load.
+
+Chronowave uses only single copy of machine generated data to support major use cases, like Analytics, AI and Real Time Monitoring. The size of self-compressed index is only a *fraction* of the original, Chronowave requires *only* the index to filter/extract information or restore entire data set with *SSQL*, Semi Structured Query Language.
+
+Chronowave transforms semi structured data into columnar formats, leverages modern CPU SIMD instructions to execute queries and full text search.
 
 
 ### command line example
@@ -45,5 +52,5 @@ Chronowave supports partial words and wild card full text search.
 ./waverider query -d data 'find $a where [$a /process][/traceID key("464382d9a88849ff")]'
 ```
 
-### Semi Structured Query Language
+### SSQL: Semi Structured Query Language
 coming soon
