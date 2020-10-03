@@ -241,7 +241,7 @@ func textSearch(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch
 
 // depth first search
 func dfs(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch func(byte, []uint)) {
-	v, ni, bounds  := 0, []int{0}, [][]uint{bound}
+	v, ni, bounds := 0, []int{0}, [][]uint{bound}
 	checked, est := uint(0), bound[end]-bound[beg]
 	terms, chars := [][]byte{{}}, [][]byte{{}}
 	terms[0], chars[0] = getCharsInBound(fmi, bound[beg], bound[end], len(pattern) > 0)
@@ -289,7 +289,6 @@ func dfs(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch func(b
 		if pattern != nil && k == pattern[0] {
 			checked += nb[end] - nb[beg]
 			textSearch(fmi, nb, pattern[1:], suffix, onMatch)
-			v--
 			continue
 		}
 

@@ -63,6 +63,11 @@ func TestContain(t *testing.T) {
 			path:    `d`,
 			pattern: `cc`,
 		}, []uint16{0, 2}, []uint16{0, 0}},
+		{"wild card", args{
+			json:    `[{"a": "rot"}, {"d" : "route"}]`,
+			path:    `d`,
+			pattern: `r*te`,
+		}, []uint16{1}, []uint16{0}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

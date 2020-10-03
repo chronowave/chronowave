@@ -130,7 +130,7 @@ func createIndex(nid int64, data []byte, timestamp string, keys []string) error 
 		}
 	}
 
-	if min >= max {
+	if min == math.MinInt64 || max == math.MinInt64 {
 		os.Remove(tmp.Name())
 		return errors.New("invalid timestamp path [" + timestamp + "]")
 	}
