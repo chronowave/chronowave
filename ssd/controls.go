@@ -26,8 +26,8 @@ const (
 	// SOH start of heading 1, field separator
 	SOH
 
-	// EOO end of object, 2
-	EOO
+	// FRAG fragment long text, 2
+	FRAG
 
 	// SOA start of array, 3
 	SOA
@@ -38,8 +38,8 @@ const (
 	// AED array element divider, 5
 	AED
 
-	// FRAG fragment long text, 6
-	FRAG
+	// EOO end of object, 6
+	EOO
 
 	// TEXT direct string start, 14
 	TEXT = iota + 7
@@ -77,5 +77,5 @@ var (
 )
 
 func IsControlCharacter(c byte) bool {
-	return c <= FRAG || (TEXT <= c && c <= JSON)
+	return c <= EOO || (TEXT <= c && c <= JSON)
 }

@@ -241,8 +241,10 @@ func textSearch(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch
 
 // depth first search
 func dfs(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch func(byte, []uint)) {
-	v, ni, bounds, terminated := 0, []int{0}, [][]uint{bound}, []uint{0}
-	checked, est, chars := uint(0), bound[end]-bound[beg], [][]byte{fmi.CharsInBound(bound[beg], bound[end])}
+	v, ni, bounds  := 0, []int{0}, [][]uint{bound}
+	checked, est := uint(0), bound[end]-bound[beg]
+	terms, chars := [][]byte{{}}, [][]byte{{}}
+	terms[0], chars[0] = getCharsInBound(fmi, bound[beg], bound[end], len(pattern) > 0)
 
 	hasMore := func() bool {
 		for v >= 0 {
@@ -257,25 +259,24 @@ func dfs(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch func(b
 
 	// depth first
 	for est > checked && hasMore() {
-		if terminated[v] == 0 {
-			for _, m := range []byte{ssd.SENTINEL, ssd.SOH, ssd.FRAG} {
+		if len(terms[v]) > 0 {
+			terminated := uint(0)
+			for _, m := range terms[v] {
 				terminate := findBound(fmi, m, bounds[v])
 				if len(terminate) > 0 {
-					terminated[v] += terminate[end] - terminate[beg]
+					terminated += terminate[end] - terminate[beg]
 					if pattern == nil {
 						onMatch(m, terminate)
 					}
 				}
 			}
+			terms[v] = nil
 
-			checked += terminated[v]
-			if terminated[v] == bounds[v][end]-bounds[v][beg] {
+			checked += terminated
+			if terminated == bounds[v][end]-bounds[v][beg] {
 				v--
 				continue
 			}
-
-			// assign non zero value
-			terminated[v] = 1
 		}
 
 		k := chars[v][ni[v]]
@@ -293,17 +294,34 @@ func dfs(fmi hfmi.FMI, bound []uint, pattern []byte, suffix bool, onMatch func(b
 		}
 
 		v++
-		nc := fmi.CharsInBound(nb[beg], nb[end])
+		tc, nc := getCharsInBound(fmi, nb[beg], nb[end], len(pattern) > 0)
 		if len(ni) > v {
 			bounds[v] = nb
 			chars[v] = nc
+			terms[v] = tc
 			ni[v] = 0
-			terminated[v] = 0
 		} else {
 			bounds = append(bounds, nb)
 			chars = append(chars, nc)
+			terms = append(terms, tc)
 			ni = append(ni, 0)
-			terminated = append(terminated, 0)
 		}
 	}
+}
+
+func getCharsInBound(fmi hfmi.FMI, s, e uint, wild bool) ([]byte, []byte) {
+	nc := fmi.CharsInBound(s, e)
+	j, tc := 0, ssd.FRAG
+	if wild {
+		tc = ssd.SOH
+	}
+
+	for _, c := range nc {
+		if c > tc {
+			break
+		}
+		j++
+	}
+
+	return nc[:j], nc[j:]
 }
