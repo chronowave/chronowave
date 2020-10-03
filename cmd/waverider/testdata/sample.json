@@ -1,0 +1,260 @@
+[{
+   "process" : {
+      "serviceName" : "frontend",
+      "tags" : [
+         {
+            "key" : "jaeger.version",
+            "value" : "Go-2.23.1",
+            "type" : "string"
+         },
+         {
+            "type" : "string",
+            "value" : "dev-laptop",
+            "key" : "hostname"
+         },
+         {
+            "type" : "string",
+            "key" : "ip",
+            "value" : "192.168.2.2"
+         },
+         {
+            "type" : "string",
+            "key" : "client-uuid",
+            "value" : "499a4ishih1a0085986"
+         }
+      ]
+   },
+   "duration" : 45732,
+   "tags" : [
+      {
+         "type" : "string",
+         "key" : "span.kind",
+         "value" : "client"
+      },
+      {
+         "type" : "string",
+         "value" : "net/http",
+         "key" : "component"
+      },
+      {
+         "type" : "string",
+         "value" : "GET",
+         "key" : "http.method"
+      },
+      {
+         "type" : "string",
+         "key" : "http.url",
+         "value" : "http://0.0.0.0:8083/route?dropoff=577%2C322&pickup=516%2C208"
+      },
+      {
+         "value" : "0.0.0.0:8083",
+         "key" : "http.url",
+         "type" : "string"
+      },
+      {
+         "value" : "true",
+         "key" : "net/http.reused",
+         "type" : "bool"
+      },
+      {
+         "type" : "bool",
+         "value" : "true",
+         "key" : "net/http.was_idle"
+      },
+      {
+         "value" : "200",
+         "key" : "http.status_code",
+         "type" : "int64"
+      },
+      {
+         "value" : "proto",
+         "key" : "internal.span.format",
+         "type" : "string"
+      }
+   ],
+   "references" : [
+      {
+         "refType" : "CHILD_OF",
+         "traceID" : "464382d9a88849ff",
+         "spanID" : "63a40fcba6e961a6"
+      }
+   ],
+   "operationName" : "HTTP GET",
+   "startTime" : 1601613777130370,
+   "startTimeMillis" : 1601613777130,
+   "logs" : [
+      {
+         "fields" : [
+            {
+               "type" : "string",
+               "value" : "GetConn",
+               "key" : "event"
+            }
+         ],
+         "timestamp" : 1601613777130389
+      },
+      {
+         "timestamp" : 1601613777130394,
+         "fields" : [
+            {
+               "key" : "event",
+               "value" : "GotConn",
+               "type" : "string"
+            }
+         ]
+      },
+      {
+         "fields" : [
+            {
+               "key" : "event",
+               "value" : "WroteHeaders",
+               "type" : "string"
+            }
+         ],
+         "timestamp" : 1601613777130413
+      },
+      {
+         "fields" : [
+            {
+               "type" : "string",
+               "key" : "event",
+               "value" : "WroteRequest"
+            }
+         ],
+         "timestamp" : 1601613777130414
+      },
+      {
+         "fields" : [
+            {
+               "value" : "GotFirstResponseByte",
+               "key" : "event",
+               "type" : "string"
+            }
+         ],
+         "timestamp" : 1601613777176065
+      },
+      {
+         "fields" : [
+            {
+               "type" : "string",
+               "key" : "event",
+               "value" : "PutIdleConn"
+            }
+         ],
+         "timestamp" : 1601613777176089
+      },
+      {
+         "fields" : [
+            {
+               "key" : "event",
+               "value" : "ClosedBody",
+               "type" : "string"
+            }
+         ],
+         "timestamp" : 1601613777176102
+      }
+   ],
+   "flags" : 1,
+   "spanID" : "2ef6e3c30af421ea",
+   "traceID" : "464382d9a88849ff"
+},
+{
+   "flags" : 1,
+   "startTime" : 1601613776645288,
+   "duration" : 43728,
+   "logs" : [
+      {
+         "timestamp" : 1601613776645321,
+         "fields" : [
+            {
+               "type" : "string",
+               "key" : "event",
+               "value" : "HTTP request received"
+            },
+            {
+               "type" : "string",
+               "key" : "level",
+               "value" : "info"
+            },
+            {
+               "type" : "string",
+               "key" : "method",
+               "value" : "GET"
+            },
+            {
+               "key" : "url",
+               "value" : "/route?dropoff=728%2C326&pickup=81%2C443",
+               "type" : "string"
+            }
+         ]
+      }
+   ],
+   "traceID" : "332ccc5fd23d1075",
+   "process" : {
+      "serviceName" : "route",
+      "tags" : [
+         {
+            "key" : "jaeger.version",
+            "value" : "Go-2.23.1",
+            "type" : "string"
+         },
+         {
+            "type" : "string",
+            "value" : "dev-laptop",
+            "key" : "hostname"
+         },
+         {
+            "value" : "192.168.2.2",
+            "key" : "ip",
+            "type" : "string"
+         },
+         {
+            "type" : "string",
+            "key" : "client-uuid",
+            "value" : "3d235dc330a124db"
+         }
+      ]
+   },
+   "spanID" : "602df45b02c0c91c",
+   "references" : [
+      {
+         "spanID" : "3102e46b3d5547ae",
+         "refType" : "CHILD_OF",
+         "traceID" : "332ccc5fd23d1075"
+      }
+   ],
+   "tags" : [
+      {
+         "type" : "string",
+         "value" : "server",
+         "key" : "span.kind"
+      },
+      {
+         "key" : "http.method",
+         "value" : "GET",
+         "type" : "string"
+      },
+      {
+         "key" : "http.url",
+         "value" : "/route?dropoff=728%2C326&pickup=81%2C443",
+         "type" : "string"
+      },
+      {
+         "type" : "string",
+         "value" : "net/http",
+         "key" : "component"
+      },
+      {
+         "type" : "int64",
+         "value" : "200",
+         "key" : "http.status_code"
+      },
+      {
+         "value" : "proto",
+         "key" : "internal.span.format",
+         "type" : "string"
+      }
+   ],
+   "startTimeMillis" : 1601613776645,
+   "operationName" : "HTTP GET /route"
+}]
