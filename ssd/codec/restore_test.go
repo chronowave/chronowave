@@ -259,7 +259,7 @@ func TestMarshalToJson(t *testing.T) {
 				t.Errorf("json Unmarshall() error = %v", err)
 			}
 			if got := MarshalToJson(indexed, nil, tt.args.eav, nil); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Restore() = %v, want %v", string(got), tt.want)
+				t.Errorf("Restore() = %v, want %v", string(got), string(tt.want))
 			}
 		})
 	}

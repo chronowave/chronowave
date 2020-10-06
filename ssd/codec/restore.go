@@ -59,8 +59,8 @@ func MarshalToJson(index *ssd.IndexedBlock, parent []byte, eav []internal.Attrib
 			}
 
 			j := 0
-			for i := 0; i < depth; i++ {
-				j += nested[depth]
+			for i := 0; i <= depth; i++ {
+				j += nested[i]
 			}
 			path = path[j:]
 			if attr.Offset > diffs[depth] {
@@ -75,9 +75,10 @@ func MarshalToJson(index *ssd.IndexedBlock, parent []byte, eav []internal.Attrib
 				for k := range attributes[depth] {
 					delete(attributes[depth], k)
 				}
-			} else if attr.ValueType == ssd.SOA && len(prev[depth]) > 0 {
+			} else if attr.ValueType == ssd.SOA && len(prev[depth]) > 0 &&
+				bytes.Equal(prev[depth][len(prev[depth])-1], path[len(path)-1]) {
 				// nested
-				for i := 0; i < len(path); i++ {
+				for i := 0; i < len(prev[depth]); i++ {
 					w.WriteByte('}')
 				}
 				w.WriteByte(',')
@@ -96,11 +97,11 @@ func MarshalToJson(index *ssd.IndexedBlock, parent []byte, eav []internal.Attrib
 			}
 		}
 
-		var parent []byte
+		var prefix []byte
 		for i := 0; i <= aligned && i < len(path); i++ {
-			parent = append(parent, path[i]...)
+			prefix = append(prefix, path[i]...)
 		}
-		key, sep := string(parent), byte(',')
+		key, sep := string(prefix), byte(',')
 		if len(attributes[depth]) == 0 {
 			sep = '{'
 		}
