@@ -1,14 +1,24 @@
-## ChronoWave: A schema agnostic data store for append only machine generated data
+## ChronoWave Search
 
+Distributed *schema agnostic* search & analytics solution for append only machine generated data. It is built on self compressed full text search engine, capable of handling ad hoc query and machine learning work load. Focusing on getting application faster to the market for an agile business while lowering the cost of development & operation.
+
+ChronoWave can be used for:
+
+   * distributed tracing
+   * logging and log analytics
+   * infrastructure and application performance monitoring
+   * machine learning on IOT data
+   * data archiving
+   * utf-8 encoded multi-byte text document search, ie. fluent search on Chinese, Korean and Japanese characters.
+
+#### Design Goal: Towards Simple, Small and Performant
 ChronoWave batches input data stream into segments (or blocks) and transforms the semi structured data into columnar formats, followed by creating self compressed index to produce a succinct index data structure. 
-
-#### Simple, Small and Performant
 
 *Simple* to develop, use and operate. Machine generated data can be in different shape and size. ChronoWave simplifies development cycle with its support of schema agnostic semi structured data. Operation is also fairly easy. ChronoWave is engineered on succinct self-compressed index data structure, the basis of shared nothing architecture that can scale out on load.
 
-ChronoWave uses only single copy of machine generated data to support major use cases, like Analytics, AI and Real Time Monitoring. The size of self-compressed index is only a *fraction* of the original, ChronoWave requires *only* the index to filter/extract information or restore entire data set with *SSQL*, Semi Structured Query Language.
+ChronoWave uses only single copy of machine generated data to support major use cases, like Analytics, AI and Real Time Monitoring. The size of self-compressed index is only a *fraction* of the original. ChronoWave requires *only* the index to filter/extract information or restore entire data set with *SSQL*, Semi Structured Query Language.
 
-ChronoWave transforms semi structured data into columnar formats, leverages modern CPU SIMD instructions to execute queries and full text search.
+ChronoWave transforms semi structured data into columnar formats, leverages modern CPU vector instructions to execute queries and full text search.
 
 ### ChronoWave In Action
    * [ChronoWave as Jaeger storage backend](https://github.com/chronowave/opentelemetry)
@@ -56,3 +66,13 @@ ChronoWave supports partial words and wild card full text search.
 ```shell script
 ./waverider query -d data 'find $a where [$a /process][/traceID key("464382d9a88849ff")]'
 ```
+
+### Version
+| feature | Open Source | Community Edition |
+| ------- | ----------- | ----------------- |
+| search & analytics | :white_check_mark: | :white_check_mark: |
+| single node / embedded | :white_check_mark: | :white_check_mark: |
+| multi-nodes cluster | :negative_squared_cross_mark: | :white_check_mark: |
+| label index selection | :negative_squared_cross_mark: | :white_check_mark: |
+| SIMD / AVX512 | :negative_squared_cross_mark: | :white_check_mark: |
+| License | Apache v2.0 | coming soon |
