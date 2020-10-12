@@ -76,3 +76,6 @@ ChronoWave supports partial words and wild card full text search.
 | label index selection | :negative_squared_cross_mark: | :white_check_mark: |
 | SIMD / AVX512 | :negative_squared_cross_mark: | :white_check_mark: |
 | License | Apache v2.0 | coming soon |
+
+### Questions or Suggestions
+Please comment on [Gitter](https://gitter.im/chronowave/community)
