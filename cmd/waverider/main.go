@@ -28,6 +28,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/araddon/dateparse"
+
+	"github.com/chronowave/chronowave/embed"
 	"github.com/chronowave/chronowave/ssql/parser"
 
 	hfmi "github.com/rleiwang/hfmi/ctor"
@@ -35,15 +38,13 @@ import (
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/spf13/cobra"
-
-	"github.com/chronowave/chronowave/embed"
 )
 
 func main() {
 	hfmi.SetSegmentCache(5 * 1024 * 1024)
 
 	var rootCmd = &cobra.Command{Use: "waverider"}
-	rootCmd.AddCommand(indexCommand(), queryCommand())
+	rootCmd.AddCommand(indexCommand(), queryCommand(), purgeCommand())
 	rootCmd.Execute()
 }
 
@@ -143,6 +144,37 @@ func queryCommand() *cobra.Command {
 
 			answer := embed.Query(context.Background(), stmt)
 			fmt.Println(string(answer))
+		},
+	}
+
+	cmd.Flags().StringVarP(&embed.Directory, "dir", "d", "data", "index directory")
+
+	return cmd
+}
+
+func purgeCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "purge [local time]",
+		Short: "Purge data before local time, as in 2019-09-25T10:38:38",
+		Long:  ``,
+		Args:  cobra.MinimumNArgs(1),
+		Run: func(cmd *cobra.Command, args []string) {
+			close, err := embed.Verify()
+			if err != nil {
+				panic(err)
+			}
+			defer close()
+
+			time, err := dateparse.ParseLocal(args[0])
+			if err != nil {
+				panic(err)
+			}
+
+			if err = embed.Purge(context.Background(), time); err != nil {
+				panic(err)
+			} else {
+				printToScreen(fmt.Sprintf("purged data before %v", time), true)
+			}
 		},
 	}
 

@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/antlr/antlr4 v0.0.0-20200915201312-e73f72be7355
+	github.com/araddon/dateparse v0.0.0-20201001162425-8aadafed4dc4
 	github.com/buger/jsonparser v1.0.0
 	github.com/cespare/xxhash/v2 v2.1.1
 	github.com/chronowave/ext v1.0.0

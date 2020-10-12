@@ -20,8 +20,10 @@
 package embed
 
 import (
+	"context"
 	"database/sql"
 	"path/filepath"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -165,4 +167,46 @@ func selectKey(path, key string) ([]int64, error) {
 	}
 
 	return wid, nil
+}
+
+func selectWidBeforeTime(time time.Time) ([]int64, error) {
+	qry := `SELECT DISTINCT wid FROM wave WHERE created < ? UNION SELECT DISTINCT wid FROM waveloc WHERE created < ?`
+	rows, err := db.Query(qry, time, time)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var (
+		tmp sql.NullInt64
+		wid []int64
+	)
+	for rows.Next() {
+		if err = rows.Scan(&tmp); err == nil && tmp.Valid {
+			wid = append(wid, tmp.Int64)
+		}
+	}
+
+	return wid, nil
+}
+
+func purgeBeforeTime(ctx context.Context, time time.Time) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, `DELETE FROM wave WHERE created < ?`, time)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	_, err = tx.ExecContext(ctx, `DELETE FROM waveloc WHERE created < ?`, time)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit()
 }

@@ -137,13 +137,13 @@ func queryIndexFile(ctx context.Context, f string, stmt *ssql.Statement, i int, 
 
 			data, err := ioutil.ReadFile(f)
 			if err != nil {
-				fmt.Printf("skipped index file %v due to %v\n", f, err)
+				log.Info().Msgf("skipped index file %v due to %v\n", f, err)
 				return
 			}
 
 			idx, err := ssdidx.DecodeIndexBlock(data)
 			if err != nil {
-				fmt.Printf("skipped index file %v, decode err %v\n", f, err)
+				log.Info().Msgf("skipped index file %v, decode err %v\n", f, err)
 				return
 			}
 
