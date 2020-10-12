@@ -115,6 +115,10 @@ func (s *WaveStream) OnNewDocument(json []byte) error {
 	return nil
 }
 
+func (s *WaveStream) Purge(ctx context.Context, time time.Time) error {
+	return Purge(ctx, time)
+}
+
 func (s *WaveStream) Query(ctx context.Context, query string) ([]byte, error) {
 	stmt, errs := parser.Parse(query)
 	if len(errs) > 0 {
