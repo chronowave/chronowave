@@ -54,7 +54,7 @@ type WaveStream struct {
 	cnt      uint64
 	batch    []string
 	c        chan []string
-	timer    *time.Timer
+	ticker   *time.Ticker
 	dbcloser func()
 	lock     sync.Mutex
 }
@@ -67,9 +67,9 @@ func NewWave(dir, ts string, keys []string) *WaveStream {
 	}
 
 	buildWalIndex()
-	timer := time.NewTimer(15 * time.Second)
+	ticker := time.NewTicker(15 * time.Second)
 	go func() {
-		for range timer.C {
+		for range ticker.C {
 			buildWalIndex()
 		}
 	}()
@@ -85,13 +85,13 @@ func NewWave(dir, ts string, keys []string) *WaveStream {
 		wal:      filepath.Join(dir, wal),
 		batch:    make([]string, 0, sz),
 		c:        c,
-		timer:    timer,
+		ticker:   ticker,
 		dbcloser: closer,
 	}
 }
 
 func (s *WaveStream) Close() {
-	s.timer.Stop()
+	s.ticker.Stop()
 	close(s.c)
 	s.dbcloser()
 }
